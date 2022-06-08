@@ -9,11 +9,14 @@ public class No1152 {
         count(data);
     }
     public static void count(String sentence) {
+        if (sentence.length() < 2 && sentence.equals(" ")) {
+            System.out.println(0);
+            return ;
+        }
         StringBuffer buf = new StringBuffer(sentence);
 
         final String FIRST_CH = buf.substring(0, 1);
         final String END_CH = buf.substring(sentence.length() - 1);
-
 
         if (FIRST_CH.equals(" ")) {
             buf.delete(0,1);
