@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.sort;
 
 public class QuickSort {
     /**
@@ -30,7 +30,7 @@ public class QuickSort {
 
 
         while (i <= j) {
-            while ( i <= end && arr[i] <= arr[key] ) {
+            while (i <= end && arr[i] <= arr[key]) {
                 i++;
             }
             while (arr[key] <= arr[j] && j > start) {

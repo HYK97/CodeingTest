@@ -1,4 +1,4 @@
-package algorithm;
+package algorithm.sort;
 
 public class InsertionSort {
 
@@ -10,12 +10,12 @@ public class InsertionSort {
 
         for (i = 0; i < arr.length - 1; i++) {
             j = i;
-            System.out.println("현재 선택한 값 arr["+i+"] = "+ arr[i]);
+            System.out.println("현재 선택한 값 arr[" + i + "] = " + arr[i]);
 
             while (arr[j] > arr[j + 1]) {
                 System.out.println("현재 j 값 = " + j);
-                System.out.println("비교 arr["+j+"] = "+ arr[j]+">  arr["+ arr[j + 1]+"] = "+arr[j+1] );
-                temp =arr[j];
+                System.out.println("비교 arr[" + j + "] = " + arr[j] + ">  arr[" + arr[j + 1] + "] = " + arr[j + 1]);
+                temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
                 j--;
