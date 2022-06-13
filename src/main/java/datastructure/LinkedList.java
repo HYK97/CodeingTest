@@ -10,14 +10,17 @@ public class LinkedList {
 
     public static void main(String[] args) {
         LinkedList list = new LinkedList();
-        list.add(2);
+        list.add(1);
         list.add(3);
         list.add(4);
         list.add(1);
         list.add(5);
-        list.delete(2);
-        list.delete(3);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.duplicateRemove();
         list.print();
+        list.recursionFindNthValue(1, list.head);
     }
 
     public void add(int data) {
@@ -51,6 +54,40 @@ public class LinkedList {
             now = now.getNext();
         }
         System.out.println(now.getData() + " ");
+    }
+
+
+    /**
+     * 중복값 제거
+     */
+    void duplicateRemove() {
+        Node now = head;
+        while (now != null && now.getNext() != null) {
+            Node runner = now;
+            while (runner.getNext() != null) {
+                if (now.getData() == runner.getNext().getData()) {
+                    runner.setNext(runner.getNext().getNext());
+                } else {
+                    runner = runner.getNext();
+                }
+            }
+            now = now.getNext();
+        }
+    }
+
+
+    /*특정노드 찾기 재귀이용*/
+    int recursionFindNthValue(int n, Node node) {
+        if (node == null) {
+            return 0;
+        }
+        int count = recursionFindNthValue(n, node.getNext()) + 1;
+        if (count == n) {
+            System.out.println(n + "번째 값은 = " + node.getData());
+
+        }
+
+        return count;
     }
 
 }
