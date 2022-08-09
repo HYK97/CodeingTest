@@ -1,53 +1,118 @@
 package mentoringquiz;
 
-import java.util.Comparator;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class 빅테크랭킹리더보드 {
-    TreeMap<Integer, String> rankingChart = new TreeMap<>(Comparator.reverseOrder()); ///(new TreeMap<>(Collections.reverseOrder()));
+
+    static Tree tree = new Tree();
+    static Map<String, Integer> userList = new HashMap<>();
 
     public static void main(String[] args) {
-        빅테크랭킹리더보드 t = new 빅테크랭킹리더보드();
-        String[] name = {"a", "b", "c", "d"};
-        int[] score = {32, 33, 29, 35};
-        for (int i = 0; i < 4; i++) {
-            t.putUser(name[i], score[i]);
+        빅테크랭킹리더보드 board = new 빅테크랭킹리더보드();
+        String[] name = {"a", "b", "c", "d", "e", "f", "g", "h"};
+        int[] score = {32, 33, 29, 35, 22, 24, 34, 30};
+        for (int i = 0; i < name.length; i++) {
+            userList.put(name[i], score[i]);
+            board.putUser(name[i], score[i]);
         }
-        System.out.println(t.getName(1));
-        System.out.println(t.getRank("d"));
+        for (String i : name) {
+            System.out.println("board = " + board.getRank(i));
+        }
+    }
+
+
+    public void putUser(String name, int score) {
+        tree.add(new Node(score, 1, name));
     }
 
     public int getRank(String name) {
-        int ranking = 1;
-        if (!rankingChart.containsValue(name)) {
-            throw new IllegalArgumentException("잘못된인수");
-        }
-        for (Integer integer : rankingChart.keySet()) {
-            if (name.equals(rankingChart.get(integer))) {
-                break;
-            }
-            ranking++;
-        }
-        return ranking;
+        Integer score = userList.get(name);
+        return tree.scoreByRankings(score);
     }
 
-    public String getName(int rank) {
-        if (rank == 0 || rankingChart.size() < rank) {
-            throw new IllegalArgumentException("잘못된인수");
-        }
-        int count = 1;
-        String name = null;
-        for (Integer integer : rankingChart.keySet()) {
-            if (count == rank) {
-                name = rankingChart.get(integer);
+   /* public String getName(int rank) {
+
+
+    }*/
+
+
+    static class Tree {
+        Node root;
+
+        Node nextNode;
+        int treeLength;
+
+        void add(Node node) {
+            treeLength++;
+            if (root == null) {
+                root = node;
+                return;
             }
-            count++;
+            nextNode = root;
+            while (true) {
+                if (nextNode.score < node.score) {
+                    if (nextNode.rightNode == null) {
+                        nextNode.rightNode = node;
+                        break;
+                    } else {
+                        nextNode = nextNode.rightNode;
+                    }
+                } else {
+                    nextNode.leftNodeCount += 1;
+                    if (nextNode.leftNode == null) {
+                        nextNode.leftNode = node;
+                        break;
+                    } else {
+                        nextNode = nextNode.leftNode;
+                    }
+                }
+            }
+
+
         }
 
-        return name;
+        //자신보다작은 값의 leftnode들을 전체 크기에서 빼주면됌
+        int scoreByRankings(int score) {
+            int rank = 0;
+            nextNode = root;
+            while (nextNode != null && nextNode.score != score) {
+                if (nextNode.score < score) {
+                    rank += nextNode.leftNodeCount;
+                    nextNode = nextNode.rightNode;
+                } else {
+                    nextNode = nextNode.leftNode;
+                }
+            }
+            return treeLength - (rank + nextNode.leftNodeCount) + 1;
+        }
+
+
+      /*  String rankingByName(int rank) {
+
+
+        }*/
+
     }
 
-    public void putUser(String name, int score) {
-        rankingChart.put(score, name);
+    static class Node {
+
+        int score;
+
+        int leftNodeCount;
+        String name;
+        Node leftNode;
+        Node rightNode;
+
+        //  동기화방법 ?
+        int rank;
+
+        public Node(int score, int leftNodeCount, String name) {
+            this.score = score;
+            this.leftNodeCount = leftNodeCount;
+            this.name = name;
+        }
+
+
     }
 }
