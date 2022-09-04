@@ -23,7 +23,7 @@ public class 빅테크랭킹리더보드 {
 
 
     public void putUser(String name, int score) {
-        tree.add(new Node(score, 1, name));
+        tree.add(new Tree.Node(score, name));
     }
 
     public int getRank(String name) {
@@ -40,7 +40,6 @@ public class 빅테크랭킹리더보드 {
     static class Tree {
         Node root;
 
-        Node nextNode;
         int treeLength;
 
         void add(Node node) {
@@ -49,21 +48,25 @@ public class 빅테크랭킹리더보드 {
                 root = node;
                 return;
             }
+            Node nextNode;
             nextNode = root;
             while (true) {
                 if (nextNode.score < node.score) {
                     if (nextNode.rightNode == null) {
+                        nextNode.increaseCount();
                         nextNode.rightNode = node;
                         break;
                     } else {
+                        nextNode.increaseCount();
                         nextNode = nextNode.rightNode;
                     }
                 } else {
-                    nextNode.leftNodeCount += 1;
                     if (nextNode.leftNode == null) {
+                        nextNode.increaseCount();
                         nextNode.leftNode = node;
                         break;
                     } else {
+                        nextNode.increaseCount();
                         nextNode = nextNode.leftNode;
                     }
                 }
@@ -71,48 +74,46 @@ public class 빅테크랭킹리더보드 {
 
 
         }
-
         //자신보다작은 값의 leftnode들을 전체 크기에서 빼주면됌
+
         int scoreByRankings(int score) {
             int rank = 0;
+            Node nextNode;
             nextNode = root;
             while (nextNode != null && nextNode.score != score) {
                 if (nextNode.score < score) {
-                    rank += nextNode.leftNodeCount;
                     nextNode = nextNode.rightNode;
                 } else {
                     nextNode = nextNode.leftNode;
                 }
             }
-            return treeLength - (rank + nextNode.leftNodeCount) + 1;
+            return 1;
+
+
         }
 
+        static class Node {
 
-      /*  String rankingByName(int rank) {
+            int score;
 
+            String name;
+            Node leftNode;
+            Node rightNode;
+            int count;
 
-        }*/
+            //  동기화방법 ?
+            int rank;
 
-    }
+            public Node(int score, String name) {
+                this.score = score;
+                count = 1;
+                this.name = name;
+            }
 
-    static class Node {
+            public void increaseCount() {
+                this.count++;
+            }
 
-        int score;
-
-        int leftNodeCount;
-        String name;
-        Node leftNode;
-        Node rightNode;
-
-        //  동기화방법 ?
-        int rank;
-
-        public Node(int score, int leftNodeCount, String name) {
-            this.score = score;
-            this.leftNodeCount = leftNodeCount;
-            this.name = name;
         }
-
-
     }
 }
