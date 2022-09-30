@@ -12,42 +12,45 @@ public class QuickSort {
     public static void main(String[] args) {
 
 
-        quickSort(arr.length - 1, 0);
+        quickSort(0, arr.length - 1);
         for (int i : arr) {
             System.out.println("i = " + i);
         }
 
     }
 
-    private static void quickSort(int end, int start) {
+    private static void quickSort(int start, int end) {
         if (start >= end) {
             return;
         }
-        int i = start + 1;//왼쪽출발
-        int j = end; //오른쪽출발
-        int key = start;
+        int left = start + 1;
+        int right = end;
+        int pivot = start;//-> arr index
         int temp;
-
-
-        while (i <= j) {
-            while (i <= end && arr[i] <= arr[key]) {
-                i++;
+        while (left <= right) {
+            while (left <= end && arr[left] <= arr[pivot]) {
+                left++;
             }
-            while (arr[key] <= arr[j] && j > start) {
-                j--;
+            while (right > start && arr[right] >= arr[pivot]) {
+                right--;
             }
-            if (i > j) {
-                temp = arr[j];
-                arr[j] = arr[key];
-                arr[key] = temp;
+            if (left > right) {
+                //right이 작은값임 바뀌었기때문에
+                temp = arr[pivot];
+                arr[pivot] = arr[right];
+                arr[right] = temp;
             } else {
-                temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+                temp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = temp;
             }
         }
-        quickSort(j - 1, start);
-        quickSort(end, j + 1);
+
+        //바꿧을때 right는 피벗이였으므로 이미 정렬된값이기때문에 이값을빼고
+        // 기준으로 나뉨 즉 start ~ right -1 / right +1 ~ end; 까지 다시비교해야댐
+        quickSort(start, right - 1);
+        quickSort(right + 1, end);
+
 
     }
 }
