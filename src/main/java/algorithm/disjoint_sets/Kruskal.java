@@ -66,7 +66,7 @@ public class Kruskal {
 
     private static int findParent(int data, int[] table) {
         if (data != table[data]) {
-            return findParent(table[data], table);
+            table[data] = findParent(table[data], table);
         }
         return table[data];
     }
