@@ -49,6 +49,8 @@ public class DFS {
             int y = graph.get(i).get(j);
             if (!check[y]) {
                 dfs(y);
+                //check[i]=false;
+                //뒤에 추가적인 로직이 필요할때 -> 백로깅
             }
         }
     }
