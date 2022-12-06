@@ -1,46 +1,110 @@
 package datastructure;
 
-public class LinkedList {
-    private Node head;
+import java.util.HashSet;
 
+public class LinkedList<T> {
+    private Node<T> head;
 
     public LinkedList() {
-        head = new Node();
+
     }
 
-    public static void main(String[] args) {
-        LinkedList list = new LinkedList();
-        list.add(7);
-        list.add(2);
-        list.add(8);
-        list.add(5);
-        list.add(3);
-        list.add(4);
+    /*  public static void main(String[] args) {
+          LinkedList list = new LinkedList();
+          list.add(7);
+          list.add(2);
+          list.add(8);
+          list.add(5);
+          list.add(3);
+          list.add(4);
 
-        list.duplicateRemove();
-        list.print();
-        list.recursionFindNthValue(1, list.head);
-        //Node node = list.nodeNSorted(list.head.getNext(), 5);
-        Node node = list.nodeNSortedHeadAndTail(list.head.getNext(), 3);
-        while (node.getNext() != null) {
-            System.out.print(node.getData() + " ");
-            node = node.getNext();
+          list.duplicateRemove();
+          list.print();
+          list.recursionFindNthValue(1, list.head);
+          //Node node = list.nodeNSorted(list.head.getNext(), 5);
+          Node node = list.nodeNSortedHeadAndTail(list.head.getNext(), 3);
+          while (node.getNext() != null) {
+              System.out.print(node.getData() + " ");
+              node = node.getNext();
+          }
+          System.out.print(node.getData() + " ");
+
+      }
+  */
+    public static <T> boolean checkPalindrome(LinkedList<T> list) {
+        Node<T> current = list.head;
+        Node<T> left = list.head;
+        Node<T> right = null;
+
+        int count = 0;
+        while (current != null) {
+            right = current;
+            current = current.getNext();
+            count++;
         }
-        System.out.print(node.getData() + " ");
 
-    }
-
-    public void add(int data) {
-        Node list = new Node(data); //추가할 node
-        Node now = head; // 현재 node
-        while (now.getNext() != null) { // 현재 node가 null일때 그뒤에 붙이도록함
-            now = now.getNext();
+        Node<T> prevRight = right;
+        for (int i = 0; i < count / 2; i++) {
+            if (!right.getData().equals(left.getData())) {
+                return false;
+            }
+            left = left.getNext();
+            right = left;
+            while (right.getNext() != prevRight) {
+                right = right.getNext();
+            }
         }
-        now.setNext(list);
+        return true;
     }
 
-    public void delete(int data) {
-        Node now = head;// 헤더다음 첫번째값.
+    public static void dataCollect(String[] data) {
+        //given
+        HashSet<Character> set = new HashSet<>();
+        for (String s : data) {
+            char c = s.toCharArray()[0];
+            set.add(c);
+        }
+
+        Character[] chars = set.toArray(new Character[0]);
+        LinkedList<String>[] lists = new LinkedList[set.size()];
+        for (int i = 0; i < chars.length; i++) {
+            lists[i] = new LinkedList<>();
+            lists[i].add(chars[i].toString());
+        }
+
+        //when
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < lists.length; j++) {
+                if (lists[j].head.getData().equals(data[i].split("")[0])) {
+                    lists[j].add(data[i]);
+                }
+            }
+        }
+
+        for (LinkedList<String> list : lists) {
+            list.print();
+            System.out.println();
+        }
+
+        //then
+
+    }
+
+    public void add(T data) {
+        Node<T> newNode = new Node<T>(data); //추가할 node
+        if (this.head == null) {
+            head = newNode;
+            return;
+        }
+        Node<T> head = this.head; // 현재 node
+        while (head.getNext() != null) { // 현재 node가 null일때 그뒤에 붙이도록함
+            head = head.getNext();
+        }
+        head.setNext(newNode);
+    }
+
+    public void delete(T data) {
+        Node<T> now = head;// 헤더다음 첫번째값.
         //다음값이 널일떄까지 반복문
         while (now.getNext() != null) {
             //다음값은 데이터가 매개변수 data 와 같으면
@@ -53,16 +117,14 @@ public class LinkedList {
         }
     }
 
-
     public void print() {
-        Node now = head.getNext();
+        Node<T> now = head;
         while (now.getNext() != null) { // 현재 node가 null일때 그뒤에 붙이도록함
             System.out.print(now.getData() + " ");
             now = now.getNext();
         }
         System.out.print(now.getData() + " ");
     }
-
 
     /**
      * 중복값 제거
@@ -82,9 +144,8 @@ public class LinkedList {
         }
     }
 
-
     /*특정노드 찾기 재귀이용*/
-    int recursionFindNthValue(int n, Node node) {
+    int recursionFindNthValue(int n, Node<T> node) {
         if (node == null) {
             return 0;
         }
@@ -99,7 +160,7 @@ public class LinkedList {
 
     /*m노드 기준으로 오른쪽 왼쪽 정렬
      * 나눠서 합치기
-     * */
+     * *//*
     Node nodeNSorted(Node start, int n) {
 
         Node leftStart = null;
@@ -140,9 +201,9 @@ public class LinkedList {
 
     }
 
-    /*
+    *//*
      * 헤드와 꼬리로 나누기
-     * */
+     * *//*
     Node nodeNSortedHeadAndTail(Node start, int n) {
         Node head = start;
         Node tail = start;
@@ -160,7 +221,6 @@ public class LinkedList {
         }
         tail.setNext(null); //마지막임을 알림
         return head;
-    }
-
+    }*/
 
 }
