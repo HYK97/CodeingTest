@@ -1,6 +1,7 @@
 package programmers.ex_search;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -16,25 +17,26 @@ import java.util.List;
  */
 public class 전력망둘로나누기 {
 
-    static int counts = 0;
+    static int counts;
 
     public static void dfs(List<List<Integer>> graph, int start, boolean check[]) {
+        List<Integer> integers = graph.get(start);
         counts++;
         check[start] = true;
-        List<Integer> integers = graph.get(start);
         for (Integer integer : integers) {
-            if (!check[start]) {
+            if (!check[integer]) {
                 dfs(graph, integer, check);
             }
         }
+        check[start] = false;
     }
 
     public static void main(String[] args) {
-        solution(9, new int[][] {{1, 3}, {2, 3}, {3, 4}, {4, 5}, {4, 6}, {4, 7}, {7, 8}, {7, 9}});
+        solution(5, new int[][] {{1, 2}, {2, 3}, {3, 4}, {4, 5}});
     }
 
     public static int solution(int n, int[][] wires) {
-        int answer = -1;
+
         List<List<Integer>> graph = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
             graph.add(new ArrayList<>());
@@ -50,15 +52,14 @@ public class 전력망둘로나누기 {
             graph.get(wire[0]).remove(Integer.valueOf(wire[1]));
             graph.get(wire[1]).remove(Integer.valueOf(wire[0]));
             counts = 0;
-            dfs(graph, wire[0], new boolean[n]);
-            int e = n - counts;
-            result.add(e);
-
+            dfs(graph, wire[0], new boolean[n + 1]);
+            int e = n - counts - counts;
+            result.add(Math.abs(e));
             graph.get(wire[0]).add(wire[1]);
             graph.get(wire[1]).add(wire[0]);
         }
-        System.out.println(result);
-        return answer;
+
+        return result.stream().min(Comparator.comparing(i -> i)).get();
     }
 
 }
