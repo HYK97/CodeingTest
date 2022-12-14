@@ -7,7 +7,7 @@ import java.util.Arrays;
  * fileName : no2
  * author :  ddh96
  * date : 2022-12-13 
- * description : no2
+ * description : https://school.programmers.co.kr/learn/courses/30/lessons/42748
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------

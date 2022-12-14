@@ -10,7 +10,7 @@ import java.util.Queue;
  * fileName : no1
  * author :  ddh96
  * date : 2022-12-13 
- * description :같은숫자는 싫어
+ * description :https://school.programmers.co.kr/learn/courses/30/lessons/12906
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
