@@ -49,22 +49,24 @@ public class No1261 {
         queue.add(new Node(x, y, 0));
         while (!queue.isEmpty()) {
             Node node = queue.poll();
+            //인접노드 확인
             for (int i = 0; i < 4; i++) {
                 int nextX = dx[i] + node.x;
                 int nextY = dy[i] + node.y;
-                int nextCost = node.cost;
+                int nextCost = node.cost; //현재 가중치
 
                 //4방향 확인
                 if (nextX < 0 || nextY < 0 || nextX >= X || nextY >= Y) {
                     continue;
                 }
+
                 //가중치를 미리세팅하는게 아니라서 그때 그때 세팅함
                 if (map[nextY][nextX] == 1) {
-                    nextCost++;
+                    nextCost++; //현재가중치에서 1추가
                 }
 
-                if (table[nextY][nextX] > nextCost) {
-                    table[nextY][nextX] = nextCost;
+                if (table[nextY][nextX] > nextCost) { //다음칸의 원래가중치 값과     현재경로로온 가중치를 비교
+                    table[nextY][nextX] = nextCost; //더작은 경우 변경
                     queue.add(new Node(nextX, nextY, nextCost));
                 }
             }
