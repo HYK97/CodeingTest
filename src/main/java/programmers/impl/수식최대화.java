@@ -3,13 +3,34 @@ package programmers.impl;
 import java.util.ArrayList;
 
 public class 수식최대화 {
-    private static final char[] PRIORITY_OPERATORS = {'+', '-', '*'};
-    private static boolean[] operatorUsed = new boolean[3];
-    private static ArrayList<Long> numbers = new ArrayList<Long>();
-    private static ArrayList<Character> operators = new ArrayList<Character>();
-    private static long maxAnswer;
+    static char[] prior = {'+', '-', '*'};
+    static boolean[] check = new boolean[3];
+    static ArrayList<Long> nums = new ArrayList<>();
+    static ArrayList<Character> ops = new ArrayList<>();
+    static long answer;
 
-    private static Long performOperation(Long num1, Long num2, char op) {
+    public static long solution(String expression) {
+        answer = 0;
+        extractNumsAndOps(expression);
+        dfs(0, new char[3]);
+        return answer;
+    }
+
+    private static void extractNumsAndOps(String expression) {
+        String num = "";
+        for (int i = 0; i < expression.length(); i++) {
+            if (Character.isDigit(expression.charAt(i))) {
+                num += expression.charAt(i);
+            } else {
+                nums.add(Long.parseLong(num));
+                num = "";
+                ops.add(expression.charAt(i));
+            }
+        }
+        nums.add(Long.parseLong(num));
+    }
+
+    public static long calc(long num1, long num2, char op) {
         switch (op) {
             case '+':
                 return num1 + num2;
@@ -18,56 +39,36 @@ public class 수식최대화 {
             case '*':
                 return num1 * num2;
             default:
-                return 0L;
+                return 0;
         }
     }
 
-    private static void calculateMaxExpressionHelper(int count, char[] operatorsInOrder) {
+    public static void dfs(int count, char[] p) {
         if (count == 3) {
-            ArrayList<Long> currentNumbers = new ArrayList<>(numbers);
-            ArrayList<Character> currentOperators = new ArrayList<Character>(operators);
+            ArrayList<Long> cNums = new ArrayList<>(nums);
+            ArrayList<Character> cOps = new ArrayList<>(ops);
 
-            for (int i = 0; i < operatorsInOrder.length; i++) {
-                for (int j = 0; j < currentOperators.size(); j++) {
-                    if (operatorsInOrder[i] == currentOperators.get(j)) {
-                        Long result = performOperation(currentNumbers.remove(j), currentNumbers.remove(j),
-                            operatorsInOrder[i]);
-                        currentNumbers.add(j, result);
-                        currentOperators.remove(j);
+            for (int i = 0; i < p.length; i++) {
+                for (int j = 0; j < cOps.size(); j++) {
+                    if (p[i] == cOps.get(j)) {
+                        long res = calc(cNums.remove(j), cNums.remove(j), p[i]);
+                        cNums.add(j, res);
+                        cOps.remove(j);
                         j--;
                     }
                 }
             }
-            maxAnswer = Math.max(maxAnswer, Math.abs(currentNumbers.get(0)));
+            answer = Math.max(answer, Math.abs(cNums.get(0)));
             return;
         }
 
         for (int i = 0; i < 3; i++) {
-            if (!operatorUsed[i]) {
-                operatorUsed[i] = true;
-                operatorsInOrder[count] = PRIORITY_OPERATORS[i];
-                calculateMaxExpressionHelper(count + 1, operatorsInOrder);
-                operatorUsed[i] = false;
+            if (!check[i]) {
+                check[i] = true;
+                p[count] = prior[i];
+                dfs(count + 1, p);
+                check[i] = false;
             }
         }
-    }
-
-    public long calculateMaxExpression(String expression) {
-        maxAnswer = 0;
-
-        String currentNumber = "";
-        for (int i = 0; i < expression.length(); i++) {
-            if (expression.charAt(i) >= '0' && expression.charAt(i) <= '9') {
-                currentNumber += expression.charAt(i);
-            } else {
-                numbers.add(Long.parseLong(currentNumber));
-                currentNumber = "";
-                operators.add(expression.charAt(i));
-            }
-        }
-        numbers.add(Long.parseLong(currentNumber));
-        calculateMaxExpressionHelper(0, new char[3]);
-
-        return maxAnswer;
     }
 }
