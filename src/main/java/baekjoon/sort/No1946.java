@@ -17,12 +17,13 @@ public class No1946 {
                 String[] s = br.readLine().split(" ");
                 rank.add(new Data(Integer.parseInt(s[0]), Integer.parseInt(s[1])));
             }
-            int answer = 1;
 
+            int answer = 1;
             int currentRank = rank.poll().b;
+
             while (!rank.isEmpty()) {
                 Data nextRank = rank.poll();
-                if (currentRank < nextRank.b) {
+                if (currentRank > nextRank.b) {
                     answer++;
                     currentRank = nextRank.b;
                 }
