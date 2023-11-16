@@ -3,7 +3,7 @@ package leetcode.learn;
 /*
 * https://leetcode.com/problems/running-sum-of-1d-array/
 * */
-public class RunningSumOf1dArray {
+public class No1480 {
 
     public int[] runningSum(int[] nums) {
         int []result =new int[nums.length];
