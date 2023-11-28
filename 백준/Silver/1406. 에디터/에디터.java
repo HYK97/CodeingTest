@@ -1,15 +1,14 @@
-
 import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        LinkedList<String> init = Arrays.stream(br.readLine().split("")).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> init = new LinkedList<>(Arrays.asList(br.readLine().split("")));
         LinkedList<String> buffer = new LinkedList<>();
+
         int numberOfCommands = Integer.parseInt(br.readLine());
         for (int i = 0; i < numberOfCommands; i++) {
             String command = br.readLine();
