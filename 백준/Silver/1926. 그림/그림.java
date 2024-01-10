@@ -43,7 +43,7 @@ public class Main {
 						if (newX < 0 || newX >= n || newY < 0 || newY >= m) {
 							continue;
 						}
-						if (check[newX][newY] || board[newX][newY] != 1) {
+						if (check[newX][newY] || board[newX][newY] == 0) {
 							continue;
 						}
 						check[newX][newY] = true;
