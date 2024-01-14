@@ -70,7 +70,7 @@ public class Main {
                     continue;
                 }
 
-                if (fireMap[current.x][current.y] != -1 //현재 좌표에 불이 번진적이 없는 경우
+                if (fireMap[current.x][current.y] >= 0 //현재 좌표에 불이 번진적이 없는 경우
                     && fireMap[newX][newY] <= jihunMap[current.x][current.y] + 1) { //다음 좌표에 불이 붙을 시간과 지훈이 다음 좌표에 도착하는 시간과 크거나 같으면( +1 하는이유는 다음좌표랑 비교하려고)
                     continue;
                 }
