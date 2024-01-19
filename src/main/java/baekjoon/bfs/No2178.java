@@ -1,67 +1,57 @@
 package baekjoon.bfs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Queue;
 
-/**
- * packageName :  baekjoon.bfs
- * fileName : No2178
- * author :  ddh96
- * date : 2023-04-04 
- * description : https://www.acmicpc.net/problem/2178
- * ===========================================================
- * DATE                 AUTHOR                NOTE
- * -----------------------------------------------------------
- * 2023-04-04                ddh96             최초 생성
- */
 public class No2178 {
+
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] s = br.readLine().split(" ");
-        int N = Integer.parseInt(s[0]);
-        int M = Integer.parseInt(s[1]);
-        int[][] map = new int[N + 1][M + 1];
-        for (int i = 1; i <= N; i++) {
-            String[] split = br.readLine().split("");
-            for (int j = 1; j <= M; j++) {
-                map[i][j] = Integer.parseInt(split[j - 1]);
-            }
+        final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] split = br.readLine().split(" ");
+        int x = Integer.parseInt(split[0]);
+        int y = Integer.parseInt(split[1]);
+        int[][] board = new int[x][y];
+        boolean[][] check = new boolean[x][y];
+        int[][] dist = new int[x][y];
+        int[] dx = {1, 0, -1, 0};
+        int[] dy = {0, 1, 0, -1};
+        for (int i = 0; i < x; i++) {
+            int[] array = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
+            board[i] = array;
+            Arrays.fill(check[i], false);
+            Arrays.fill(dist[i], 0);
         }
-        int dx[] = new int[] {-1, 1, 0, 0};
-        int dy[] = new int[] {0, 0, -1, 1};
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(new Node(1, 1));
+        LinkedList<Pair> queue = new LinkedList<>();
+        queue.add(new Pair(0, 0));
+        check[0][0] = true;
+        dist[0][0]++;
         while (!queue.isEmpty()) {
-            Node poll = queue.poll();
-            for (int i = 0; i < dx.length; i++) {
-                int nextX = poll.x + dx[i];
-                int nextY = poll.y + dy[i];
-                if (nextX < 1 || nextY < 1 || nextX > M || nextY > N || map[nextY][nextX] == 0) {
+            Pair current = queue.pollFirst();
+            for (int i = 0; i < 4; i++) {
+                int newX = current.x + dx[i];
+                int newY = current.y + dy[i];
+                if (newX < 0 || newX >= x || newY < 0 || newY >= y) {
                     continue;
                 }
-                if (map[nextY][nextX] == 1) {
-                    map[nextY][nextX] = map[poll.y][poll.x] + 1;
-                    queue.add(new Node(nextX, nextY));
+                if (board[newX][newY] == 0 || check[newX][newY]) {
+                    continue;
                 }
+                queue.add(new Pair(newX, newY));
+                check[newX][newY] = true;
+                dist[newX][newY] = dist[current.x][current.y] + 1;
             }
-
         }
-
-        System.out.println(map[N][M]);
-
+        System.out.println(dist[x - 1][y - 1]);
     }
 
-    static class Node {
+    static class Pair {
         int x;
         int y;
 
-        public Node(int x, int y) {
+        public Pair(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
-
 }
