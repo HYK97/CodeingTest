@@ -67,10 +67,7 @@ public class Main {
 
 
 			boolean flag = true;
-			while (!sangQueue.isEmpty()) {
-				if (!flag) {
-					break;
-				}
+			while (!sangQueue.isEmpty()&&flag) {
 				Pair current = sangQueue.poll();
 				for (int j = 0; j < 4; j++) {
 					int newX = current.x + dx[j];
