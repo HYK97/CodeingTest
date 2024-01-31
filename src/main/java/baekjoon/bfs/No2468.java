@@ -2,25 +2,37 @@ package baekjoon.bfs;
 
 import baekjoon.template.BaekjoonTemplate;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
+/*
+* 아이디어 지도를 그릴때 비가 차서갈수있는곳 없는곳을 미리 다 정해놓고 bfs로 돌림
+* */
 public class No2468 extends BaekjoonTemplate {
 	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		new No2468().solution();
+	}
+
+	@Override
+	public void solution() throws IOException {
 		int N = Integer.parseInt(br.readLine());
 		int MAX = 0;
 		int[][] originalMap = new int[N][N];
 		int[] dx = {-1, 0, 1, 0};
 		int[] dy = {0, -1, 0, 1};
+		int MAX_HEIGHT = -1;
+
 		for (int i = 0; i < N; i++) {
-			originalMap[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+			String[] sp = br.readLine().split(" ");
+			for (int j = 0; j < N; j++) {
+				int input = Integer.parseInt(sp[j]);
+				MAX_HEIGHT = Math.max(MAX_HEIGHT, input);
+				originalMap[i][j] = input;
+			}
 		}
-		for (int i = 1; i <= 100; i++) {
+
+		for (int i = 0; i <= MAX_HEIGHT; i++) {
 			int[][] newMap = new int[N][N];
 			boolean[][] check = new boolean[N][N];
 			Queue<Pair> queue = new LinkedList<>();
@@ -38,6 +50,7 @@ public class No2468 extends BaekjoonTemplate {
 					}
 				}
 			}
+
 			int numberOfAreas = 0;
 			for (int x = 0; x < N; x++) {
 				for (int y = 0; y < N; y++) {
@@ -68,11 +81,6 @@ public class No2468 extends BaekjoonTemplate {
 			MAX = Math.max(numberOfAreas, MAX);
 		}
 		System.out.println(MAX);
-	}
-
-	@Override
-	public void solution() throws IOException {
-
 	}
 
 	static class Pair {
