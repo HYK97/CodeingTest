@@ -40,8 +40,6 @@ public class No6593 extends BaekjoonTemplate {
 			}
 
 
-
-
 		}
 	}
 
