@@ -1,6 +1,5 @@
 package programmers.kakao
 
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -63,13 +62,37 @@ fun solution(info: Array<String>, query: Array<String>): IntArray {
 }
 
 //이진 검색
+//dfs 모든 쿼리
 
 class Solution2 {
-    fun search(arrNum: ArrayList<Int>, score: Int): Int {
+
+    fun solution(info: Array<String>, query: Array<String>): IntArray {
+        val table = LinkedHashMap<String, ArrayList<Int>>()
+
+        info.forEach { data ->
+            val tokens = data.split(" ")
+            bruteForce(table, tokens, tokens.last().toInt(), "", 0)
+        }
+
+        for (mutableEntry in table) {
+            println("javaClass = ${mutableEntry}")
+        }
+
+        table.values.forEach { it.sort() }
+
+        return query.map { q ->
+            val tokens = q.replace(" and ", "").split(" ")  // ---- 150
+            val score = tokens.last().toInt() // 150
+            val realQuery = tokens.dropLast(1).joinToString("") //----
+            table[realQuery]?.let { it.size - search(it, score) } ?: 0
+        }.toIntArray()
+    }
+
+    fun search(arrNum: ArrayList<Int>, score: Int): Int { //score를 만족하는 숫자의 범위를 검색
         var low = 0
         var high = arrNum.size - 1
         while (low <= high) {
-            var mid = (low + high) / 2
+            val mid = (low + high) / 2
             if (arrNum[mid] < score) {
                 low = mid + 1
             } else {
@@ -79,30 +102,12 @@ class Solution2 {
         return low
     }
 
-    fun dfs(infoMap: MutableMap<String, ArrayList<Int>>, info: List<String>, score: Int, sentence: String, cnt: Int) {
-        if (cnt == 4) {
-            infoMap.getOrPut(sentence) { ArrayList() }.add(score)
+    fun bruteForce(table: LinkedHashMap<String, ArrayList<Int>>, info: List<String>, score: Int, makeData: String, count: Int) {
+        if (count == 4) {
+            table.getOrPut(makeData) { ArrayList() }.add(score)
             return
         }
-        dfs(infoMap, info, score, sentence + info[cnt], cnt + 1)
-        dfs(infoMap, info, score, sentence + "-", cnt + 1)
-    }
-
-    fun solution(info: Array<String>, query: Array<String>): IntArray {
-        val infoMap = mutableMapOf<String, ArrayList<Int>>()
-
-        info.forEach { sen ->
-            val tokens = sen.split(" ")
-            dfs(infoMap, tokens, tokens.last().toInt(), "", 0)
-        }
-
-        infoMap.values.forEach { it.sort() }
-
-        return query.map { q ->
-            val tokens = q.replace(" and ", "").split(" ")
-            val score = tokens.last().toInt()
-            val sentence = tokens.dropLast(1).joinToString("")
-            infoMap[sentence]?.let { it.size - search(it, score) } ?: 0
-        }.toIntArray()
+        bruteForce(table, info, score, makeData + info[count], count + 1) // "" -> "java" -> "javabackend" ....
+        bruteForce(table, info, score, makeData + "-", count + 1)  //"javabackendjunior-" -> "javabackendjunior-pizza" -> ....
     }
 }
