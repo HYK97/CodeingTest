@@ -33,28 +33,22 @@ class 파괴되지않은도시 {
             val r2 = sk[3]
             val c2 = sk[4]
             val degree = sk[5]
+
+            var typeDegree = degree
+
             if (type == 2) {
-                newBoard[r1][c1] += degree
-                if (c2 + 1 < col) {
-                    newBoard[r1][c2 + 1] += -degree
-                }
-                if (r2 + 1 < row) {
-                    newBoard[r2 + 1][c1] += -degree
-                }
-                if (r2 + 1 < row && c2 + 1 < col) {
-                    newBoard[r2 + 1][c2 + 1] += degree
-                }
-            } else {
-                newBoard[r1][c1] += -degree
-                if (c2 + 1 < col) {
-                    newBoard[r1][c2 + 1] += degree
-                }
-                if (r2 + 1 < row) {
-                    newBoard[r2 + 1][c1] += degree
-                }
-                if (r2 + 1 < row && c2 + 1 < col) {
-                    newBoard[r2 + 1][c2 + 1] += -degree
-                }
+                typeDegree = degree * -1
+            }
+
+            newBoard[r1][c1] += typeDegree
+            if (c2 + 1 < col) {
+                newBoard[r1][c2 + 1] += -typeDegree
+            }
+            if (r2 + 1 < row) {
+                newBoard[r2 + 1][c1] += -typeDegree
+            }
+            if (r2 + 1 < row && c2 + 1 < col) {
+                newBoard[r2 + 1][c2 + 1] += typeDegree
             }
         }
 
