@@ -1,33 +1,14 @@
 class Solution {
-    fun quickSort(arr: IntArray, low: Int, high: Int) {
-        if (low < high) {
-            val pi = partition(arr, low, high)
-            quickSort(arr, low, pi - 1)
-            quickSort(arr, pi + 1, high)
+    fun sortColors(nums: IntArray): Unit {
+        val countingSort = intArrayOf(0, 0, 0)
+        for (i in nums) {
+            countingSort[i]++
         }
-    }
-
-    private fun partition(arr: IntArray, low: Int, high: Int): Int {
-        val pivot = arr[high]
-        var i = (low - 1)
-
-        for (j in low until high) {
-            if (arr[j] < pivot) {
-                i++
-                val temp = arr[i]
-                arr[i] = arr[j]
-                arr[j] = temp
+        var index=0
+        for (i in countingSort.withIndex()) {
+            for (i1 in 1..i.value) {
+                nums[index++]=i.index
             }
         }
-
-        val temp = arr[i + 1]
-        arr[i + 1] = arr[high]
-        arr[high] = temp
-
-        return i + 1
-    }
-
-    fun sortColors(nums: IntArray): Unit {
-        quickSort(nums, 0, nums.size - 1)
     }
 }
