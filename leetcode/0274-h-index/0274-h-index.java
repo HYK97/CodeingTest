@@ -1,14 +1,12 @@
 class Solution {
     public int hIndex(int[] citations) {
-        Arrays.sort(citations);
-        if (citations.length == 1 && citations[0] == 0){
-            return 0;
-        }
-        for (int i = 0 ; i < citations.length ; i ++){
-            if (citations[i] == i + 1){
-                return citations[i];
+        Integer [] tmp = Arrays.stream(citations).boxed().toArray(Integer[]::new);
+        Arrays.sort(tmp, Comparator.reverseOrder());
+        for (int i = 0 ; i < tmp.length ; i ++) {
+            if (tmp[i] < i + 1) {
+                return i;
             }
         }
-        return 1;
+        return tmp.length;
     }
 }
