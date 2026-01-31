@@ -1,50 +1,47 @@
 class Solution {
     fun spiralOrder(matrix: Array<IntArray>): List<Int> {
-        var maxR = matrix[0].size - 1
-        var maxT = matrix.size - 1
-        var maxL = 0
-        var maxB = 0
-        var result = mutableListOf<Int>()
-        val count = matrix.size * matrix[0].size
-        while(result.size!=count) {
-            right(matrix, maxR, maxT, maxL, maxB,result)
-            maxR--
-            if(result.size==count){
-                return result
+        val result = mutableListOf<Int>()
+        if (matrix.isEmpty()) return result
+        
+        // 1. 네 개의 벽(경계선) 초기화
+        var top = 0
+        var bottom = matrix.size - 1
+        var left = 0
+        var right = matrix[0].size - 1
+        
+        // 2. 종료 조건: 벽이 서로 교차하기 전까지 계속 반복 
+        // 더 쉬운 방법 matrix -> 개수랑 result 개수랑 같은때
+        while (top <= bottom && left <= right) {
+            
+            // 오른쪽으로 이동 (맨 윗줄)
+            for (i in left..right) {
+                result.add(matrix[top][i])
             }
-            down(matrix, maxR, maxT, maxL, maxB,result)
-            maxB++
-            if(result.size==count){
-                return result
+            top++ // 윗벽을 한 칸 아래로 내림
+            
+            // 아래로 이동 (맨 오른쪽 줄)
+            for (i in top..bottom) {
+                result.add(matrix[i][right])
             }
-            left(matrix, maxR, maxT, maxL, maxB,result)
-            maxL++
-            if(result.size==count){
-                return result
+            right-- 
+            
+            // 윗벽이 아랫벽(bottom)보다 커졌거나, 
+            // 왼쪽벽이 오른쪽벽보다 커졌다면 더 이상 갈 곳이 없음
+            if (top > bottom || left > right) break
+            
+            // 왼쪽으로 이동 (맨 아랫줄)
+            for (i in right downTo left) {
+                result.add(matrix[bottom][i])
             }
-            up(matrix, maxR, maxT, maxL, maxB,result)
-            maxT--
+            bottom-- // 아랫벽을 한 칸 위로 올림
+            
+            // 위로 이동 (맨 왼쪽 줄)
+            for (i in bottom downTo top) {
+                result.add(matrix[i][left])
+            }
+            left++ // 왼쪽 벽을 한 칸 오른쪽으로 당김
         }
+        
         return result
-    }
-}
-fun right(matrix: Array<IntArray>, maxR: Int ,maxT: Int ,maxL: Int, maxB: Int, result: MutableList<Int>){
-    for(i in maxL .. maxR){
-        result.add(matrix[maxB][i])
-    }
-}
-fun down(matrix: Array<IntArray>, maxR: Int ,maxT: Int ,maxL: Int, maxB: Int, result: MutableList<Int>){
-    for(i in maxB+1 .. maxT) {
-        result.add(matrix[i][maxR+1])
-    }
-}
-fun left(matrix: Array<IntArray>, maxR: Int ,maxT: Int ,maxL: Int, maxB: Int, result: MutableList<Int>){
-    for(i in maxR downTo maxL) {
-        result.add(matrix[maxT][i])
-    }
-}
-fun up(matrix: Array<IntArray>, maxR: Int ,maxT: Int ,maxL: Int, maxB: Int, result: MutableList<Int>){
-    for(i in maxT-1 downTo maxB) {
-        result.add(matrix[i][maxL-1])
     }
 }
